@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Merit Payroll · Payslip Management</title>
+    <!-- Google Fonts for premium typography (clean, modern) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome 6 (free) for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- html2pdf for PDF download (optional, works if CDN available) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="./css/style.css">
+
+</head>
+
+<body>
+    <div class="app">
+        <!-- ========== SIDEBAR ========== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-mark"><i class="fas fa-calculator"></i></div>
+                    <span>MERIT<br><small style="font-weight:400;font-size:0.7rem;">Payroll</small></span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item" data-nav="dashboard"><i
+                        class="fas fa-th-large"></i><span>Dashboard</span></button>
+                <button class="nav-item" data-nav="employees"><i
+                        class="fas fa-users"></i><span>Employees</span></button>
+                <button class="nav-item" data-nav="payroll"><i
+                        class="fas fa-money-bill-wave"></i><span>Payroll</span></button>
+                <button class="nav-item active" data-nav="payslips"><i
+                        class="fas fa-file-invoice"></i><span>Payslips</span></button>
+                <button class="nav-item" data-nav="attendance"><i
+                        class="fas fa-calendar-check"></i><span>Attendance</span></button>
+                <button class="nav-item" data-nav="reports"><i
+                        class="fas fa-chart-bar"></i><span>Reports</span></button>
+                <button class="nav-item" data-nav="settings"><i class="fas fa-cog"></i><span>Settings</span></button>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="nav-item" id="themeToggle"><i class="fas fa-moon"></i><span>Dark Mode</span></button>
+                <button class="nav-item"><i class="fas fa-circle"
+                        style="color:var(--success);font-size:0.6rem;"></i><span>System Status</span></button>
+                <div class="admin-profile">
+                    <div class="admin-avatar">A</div>
+                    <div class="admin-info">
+                        <div class="name">Admin User</div>
+                        <div class="role">HR Manager</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ========== MAIN ========== -->
+        <div class="main">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Payslip Management</h1>
+                    <p>Create, review and manage employee salary statements.</p>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search employees..." aria-label="Search">
+                    </div>
+                    <button class="icon-btn" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge"></span>
+                    </button>
+                    <div class="user-chip">
+                        <div class="avatar">A</div>
+                        <span class="name">Admin</span>
+                    </div>
+                    <span class="text-xs text-muted" id="currentDateDisplay">May 20, 2026</span>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="content">
+                <!-- KPI CARDS -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Total Employees</span>
+                            <div class="kpi-icon blue"><i class="fas fa-users"></i></div>
+                        </div>
+                        <div class="kpi-value">126</div>
+                        <div class="kpi-sub"><span class="trend-up"><i class="fas fa-arrow-up"></i> 4.2%</span> from
+                            last month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Payroll This Month</span>
+                            <div class="kpi-icon green"><i class="fas fa-money-bill-wave"></i></div>
+                        </div>
+                        <div class="kpi-value">৳ 2,684,500</div>
+                        <div class="kpi-sub"><span class="trend-up"><i class="fas fa-arrow-up"></i> 2.1%</span> vs last
+                            month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Paid</span>
+                            <div class="kpi-icon blue"><i class="fas fa-check-circle"></i></div>
+                        </div>
+                        <div class="kpi-value">৳ 2,421,300</div>
+                        <div class="kpi-sub">90.2% of total payroll</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Pending</span>
+                            <div class="kpi-icon amber"><i class="fas fa-clock"></i></div>
+                        </div>
+                        <div class="kpi-value">৳ 263,200</div>
+                        <div class="kpi-sub">9.8% awaiting processing</div>
+                    </div>
+                </div>
+
+                <!-- WORKSPACE: EDITOR + PREVIEW -->
+                <div class="workspace">
+                    <!-- ========== LEFT: EDITOR ========== -->
+                    <div class="editor" id="editor">
+                        <!-- Employee Information -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-user"></i> Employee Information</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Employee Name <span class="required">*</span></label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-user"></i>
+                                            <input type="text" id="empName" value="Ridoana Tabassum Mithila"
+                                                placeholder="Full name">
+                                        </div>
+                                        <div class="error-msg" id="empNameError">Employee name is required</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Employee ID <span class="required">*</span></label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-id-badge"></i>
+                                            <input type="text" id="empId" value="MRS-04" placeholder="e.g. MRS-04">
+                                        </div>
+                                        <div class="error-msg" id="empIdError">Employee ID is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Designation</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-briefcase"></i>
+                                            <input type="text" id="designation" value="Assistant Teacher">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Joining Date</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <input type="text" id="joiningDate" value="24-Nov-2025">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Location</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <input type="text" id="location"
+                                                value="Merit Residential School, Narsingdi">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>TIN Number</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-file-invoice"></i>
+                                            <input type="text" id="tinNo" value="451591449599">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pay Period -->
+                        <div class="card" style="margin-top:16px;">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-calendar-alt"></i> Pay Period</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Pay Month</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-calendar"></i>
+                                            <select id="payMonth">
+                                                <option>January</option>
+                                                <option>February</option>
+                                                <option>March</option>
+                                                <option>April</option>
+                                                <option selected>May</option>
+                                                <option>June</option>
+                                                <option>July</option>
+                                                <option>August</option>
+                                                <option>September</option>
+                                                <option>October</option>
+                                                <option>November</option>
+                                                <option>December</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-calendar"></i>
+                                            <input type="number" id="payYear" value="2026" min="2000" max="2100">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Pay Date</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-calendar-check"></i>
+                                            <input type="text" id="payDate" value="20-May-2026">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="helper" id="payPeriodDisplay">Pay Period: 01-May-2026 – 31-May-2026</div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Information -->
+                        <div class="card" style="margin-top:16px;">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-credit-card"></i> Payment Information</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Payment Type</label>
+                                    <div class="segmented" id="paymentTypeSegmented">
+                                        <button data-type="Cash">💵 Cash</button>
+                                        <button data-type="Bank" class="active">🏦 Bank</button>
+                                        <button data-type="Cheque">📄 Cheque</button>
+                                    </div>
+                                </div>
+                                <div id="bankFields">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Bank Name</label>
+                                            <div class="input-wrap">
+                                                <i class="fas fa-university"></i>
+                                                <input type="text" id="bankName" value="Islami Bank Bangladesh PLC.">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Branch</label>
+                                            <div class="input-wrap">
+                                                <i class="fas fa-code-branch"></i>
+                                                <input type="text" id="bankBranch" value="Narsingdi Sadar, Narsingdi">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Bank Account Number</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-hashtag"></i>
+                                            <input type="text" id="bankAc" value="20501196700224100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="chequeField" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Cheque Number</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-money-check"></i>
+                                            <input type="text" id="chequeNo" value="N/A">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Attendance & Leave -->
+                        <div class="card" style="margin-top:16px;">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-calendar-check"></i> Attendance & Leave</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Working Days</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-briefcase"></i>
+                                            <input type="number" id="workingDays" value="26" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Days Worked</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-check"></i>
+                                            <input type="number" id="daysWorked" value="26" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Late Come</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-clock"></i>
+                                            <input type="number" id="lateCome" value="0" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Casual Leave</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-umbrella-beach"></i>
+                                            <input type="number" id="casualLeave" value="1" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sick Leave</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-thermometer"></i>
+                                            <input type="number" id="sickLeave" value="0" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Earned Leave</label>
+                                        <div class="input-wrap">
+                                            <i class="fas fa-star"></i>
+                                            <input type="number" id="earnedLeave" value="1" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="attendance-stats" id="attendanceStats">
+                                    <div class="att-stat">Attendance: <span class="val" id="attendancePct">100%</span>
+                                    </div>
+                                    <div class="att-stat">Late: <span class="val" id="lateDisplay">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Salary Components -->
+                        <div class="card" style="margin-top:16px;">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-coins"></i> Salary Breakdown</div>
+                            </div>
+                            <div class="card-body" id="salaryComponents">
+                                <!-- Basic -->
+                                <div class="salary-row">
+                                    <div class="salary-row-header">
+                                        <span class="label">Basic Salary</span>
+                                        <span class="calculated" id="basicCalc">৳13,000.00</span>
+                                    </div>
+                                    <div class="salary-inputs">
+                                        <input type="number" id="basicSalary" value="13000" min="0" step="100">
+                                        <div class="mode-toggle">
+                                            <button class="active" data-mode="fixed">৳</button>
+                                            <button data-mode="pct" disabled>%</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- House Rent -->
+                                <div class="salary-row">
+                                    <div class="salary-row-header">
+                                        <span class="label">House Rent</span>
+                                        <span class="calculated" id="houseCalc">৳5,200.00</span>
+                                    </div>
+                                    <div class="salary-inputs">
+                                        <input type="number" id="houseRent" value="40" min="0">
+                                        <div class="mode-toggle">
+                                            <button data-mode="fixed">৳</button>
+                                            <button class="active" data-mode="pct">%</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Medical -->
+                                <div class="salary-row">
+                                    <div class="salary-row-header">
+                                        <span class="label">Medical Allowance</span>
+                                        <span class="calculated" id="medicalCalc">৳1,300.00</span>
+                                    </div>
+                                    <div class="salary-inputs">
+                                        <input type="number" id="medicalExp" value="10" min="0">
+                                        <div class="mode-toggle">
+                                            <button data-mode="fixed">৳</button>
+                                            <button class="active" data-mode="pct">%</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Conveyance -->
+                                <div class="salary-row">
+                                    <div class="salary-row-header">
+                                        <span class="label">Conveyance Allowance</span>
+                                        <span class="calculated" id="convCalc">৳1,040.00</span>
+                                    </div>
+                                    <div class="salary-inputs">
+                                        <input type="number" id="conveyance" value="8" min="0">
+                                        <div class="mode-toggle">
+                                            <button data-mode="fixed">৳</button>
+                                            <button class="active" data-mode="pct">%</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Others -->
+                                <div class="salary-row">
+                                    <div class="salary-row-header">
+                                        <span class="label">Others Allowance</span>
+                                        <span class="calculated" id="othersCalc">৳700.00</span>
+                                    </div>
+                                    <div class="salary-inputs">
+                                        <input type="number" id="othersAllowance" value="700" min="0" step="50">
+                                        <div class="mode-toggle">
+                                            <button class="active" data-mode="fixed">৳</button>
+                                            <button data-mode="pct" disabled>%</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Deductions -->
+                        <div class="card" style="margin-top:16px;">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-minus-circle"></i> Deductions (Optional)</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="deduction-row">
+                                    <label>Income Tax</label>
+                                    <input type="number" id="deductionTax" value="0" min="0" placeholder="0">
+                                </div>
+                                <div class="deduction-row">
+                                    <label>Provident Fund</label>
+                                    <input type="number" id="deductionPF" value="0" min="0" placeholder="0">
+                                </div>
+                                <div class="deduction-row">
+                                    <label>Loan</label>
+                                    <input type="number" id="deductionLoan" value="0" min="0" placeholder="0">
+                                </div>
+                                <div class="deduction-row">
+                                    <label>Advance</label>
+                                    <input type="number" id="deductionAdvance" value="0" min="0" placeholder="0">
+                                </div>
+                                <div class="deduction-row">
+                                    <label>Late Penalty</label>
+                                    <input type="number" id="deductionPenalty" value="0" min="0" placeholder="0">
+                                </div>
+                                <div class="deduction-row">
+                                    <label>Other Deduction</label>
+                                    <input type="number" id="deductionOther" value="0" min="0" placeholder="0">
+                                </div>
+                                <div class="helper" style="margin-top:8px;">Total Deductions: <strong
+                                        id="totalDeductionDisplay">৳0.00</strong></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========== RIGHT: PAYSLIP PREVIEW ========== -->
+                    <div class="payslip-preview-wrap">
+                        <!-- Action Buttons -->
+                        <div class="payslip-actions">
+                            <button class="btn btn-primary" id="saveBtn"><i class="fas fa-save"></i> Save
+                                Payslip</button>
+                            <button class="btn" id="printBtn"><i class="fas fa-print"></i> Print</button>
+                            <button class="btn" id="downloadPdfBtn"><i class="fas fa-file-pdf"></i> PDF</button>
+                            <button class="btn btn-danger" id="resetBtn"><i class="fas fa-undo-alt"></i> Reset</button>
+                        </div>
+
+                        <!-- A4 Payslip Document -->
+                        <div class="payslip-doc" id="payslipDoc">
+                            <!-- Watermark -->
+                            <div class="watermark">
+                                <img src="./assets/watermark.png">
+                            </div>
+
+                            <!-- Header -->
+                            <div class="payslip-header">
+                                <img class="logo" src="./assets/logo.png">
+                                <div class="school-info">
+                                    <div class="name">MERIT RESIDENTIAL SCHOOL</div>
+                                    <div class="sub">English Version</div>
+                                    <div class="sub">West Brahmondi, Narsingdi Sadar, Narsingdi – Bangladesh</div>
+                                    <div class="sub">Email: info.meritresidential@gmail.com | Mobile: +8801842882825
+                                    </div>
+                                </div>
+                                <div class="right-meta">
+                                    <div class="payslip-label">PAYSLIP</div>
+                                    <div>Pay Period: <span id="previewPayPeriod">May 2026</span></div>
+                                    <div>Payslip ID: <span id="previewPayslipId">MS-PAY-2026-05-0004</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Title -->
+                            <div class="payslip-title" id="previewTitle">Pay Slip for the Month May – 2026</div>
+
+                            <!-- Info Grid -->
+                            <div class="payslip-info-grid">
+                                <div class="info-col">
+                                    <div class="info-item"><span class="lbl">Employee Name:</span><span class="val"
+                                            id="previewEmpName">Ridoana Tabassum Mithila</span></div>
+                                    <div class="info-item"><span class="lbl">Employee ID:</span><span class="val"
+                                            id="previewEmpId">MRS-04</span></div>
+                                    <div class="info-item"><span class="lbl">Designation:</span><span class="val"
+                                            id="previewDesignation">Assistant Teacher</span></div>
+                                    <div class="info-item"><span class="lbl">TIN NO.:</span><span class="val"
+                                            id="previewTin">451591449599</span></div>
+                                    <div class="info-item"><span class="lbl">Joining Date:</span><span class="val"
+                                            id="previewJoiningDate">24-Nov-2025</span></div>
+                                    <div class="info-item"><span class="lbl">Location:</span><span class="val"
+                                            id="previewLocation">Merit Residential School, Narsingdi</span></div>
+                                </div>
+                                <div class="info-col">
+                                    <div class="info-item"><span class="lbl">Pay Period:</span><span class="val"
+                                            id="previewPayPeriodDetail">01-May-2026 – 31-May-2026</span></div>
+                                    <div class="info-item"><span class="lbl">Pay Date:</span><span class="val"
+                                            id="previewPayDate">20-May-2026</span></div>
+                                    <div class="info-item"><span class="lbl">Payment Type:</span><span class="val"
+                                            id="previewPaymentType">Bank</span></div>
+                                    <div class="info-item"><span class="lbl">Bank Name:</span><span class="val"
+                                            id="previewBankName">Islami Bank Bangladesh PLC.</span></div>
+                                    <div class="info-item"><span class="lbl">Branch:</span><span class="val"
+                                            id="previewBankBranch">Narsingdi Sadar, Narsingdi</span></div>
+                                    <div class="info-item"><span class="lbl">Account No:</span><span class="val"
+                                            id="previewBankAc">20501196700224100</span></div>
+                                    <div class="info-item"><span class="lbl">Cheque No:</span><span class="val"
+                                            id="previewChequeNo">N/A</span></div>
+                                </div>
+                                <div class="info-col">
+                                    <div class="info-item"><span class="lbl">Working Days:</span><span class="val"
+                                            id="previewWorkingDays">26</span></div>
+                                    <div class="info-item"><span class="lbl">Days Worked:</span><span class="val"
+                                            id="previewDaysWorked">26</span></div>
+                                    <div class="info-item"><span class="lbl">Late Come:</span><span class="val"
+                                            id="previewLateCome">0</span></div>
+                                    <div class="info-item"><span class="lbl">Casual Leave:</span><span class="val"
+                                            id="previewCasualLeave">1</span></div>
+                                    <div class="info-item"><span class="lbl">Sick Leave:</span><span class="val"
+                                            id="previewSickLeave">0</span></div>
+                                    <div class="info-item"><span class="lbl">Earned Leave:</span><span class="val"
+                                            id="previewEarnedLeave">1</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Earnings & Deductions Table -->
+                            <div class="payslip-section-title">Earnings & Deductions</div>
+                            <table class="earnings-table" id="earningsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:45%;">Description</th>
+                                        <th style="width:25%;">Calculation</th>
+                                        <th style="width:30%; text-align:right;">Amount (৳)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>a. Basic Salary</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewBasic">13,000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>b. House Rent</td>
+                                        <td id="previewHouseCalcLabel">40% of Basic</td>
+                                        <td class="amount" id="previewHouse">5,200.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>c. Medical Allowance</td>
+                                        <td id="previewMedicalCalcLabel">10% of Basic</td>
+                                        <td class="amount" id="previewMedical">1,300.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>d. Conveyance Allowance</td>
+                                        <td id="previewConvCalcLabel">8% of Basic</td>
+                                        <td class="amount" id="previewConveyance">1,040.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>e. Others Allowance</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewOthers">700.00</td>
+                                    </tr>
+                                    <tr class="subtotal">
+                                        <td>f. Gross Salary (a+b+c+d+e)</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewGross">21,240.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"
+                                            style="background:#fafafa;font-weight:700;font-size:11px;padding:4px 10px;color:#555;">
+                                            Deductions</td>
+                                    </tr>
+                                    <tr>
+                                        <td>g. Income Tax</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewTax">0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>h. Provident Fund</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewPF">0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>i. Loan</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewLoan">0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>j. Advance</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewAdvance">0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>k. Late Penalty</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewPenalty">0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>l. Other Deduction</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewOtherDeduction">0.00</td>
+                                    </tr>
+                                    <tr class="total-deduction">
+                                        <td>m. Total Deductions (g+h+i+j+k+l)</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewTotalDeduction">0.00</td>
+                                    </tr>
+                                    <tr class="net-row">
+                                        <td>NET SALARY (f – m)</td>
+                                        <td>—</td>
+                                        <td class="amount" id="previewNet">21,240.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Net Pay Highlight -->
+                            <div class="payslip-net-block">
+                                <span class="net-label">NET PAY (BDT)</span>
+                                <span class="net-value" id="previewNetBlock">৳ 21,240.00</span>
+                                <span class="net-words" id="previewNetWords">In Word: Twenty One Thousand Two Hundred
+                                    Forty Taka Only</span>
+                            </div>
+
+                            <!-- Signatures -->
+                            <div class="payslip-signatures">
+                                <div class="sign-box">
+                                    <div style="font-size:11px;font-weight:700;color:#333;margin-bottom:30px;">
+                                        Authorized Signature</div>
+                                    <div class="sign-line">
+                                        <div class="name">(Mohammad Jakir Hossain)</div>
+                                        <div class="title">Director, HR & Admin</div>
+                                    </div>
+                                </div>
+                                <div class="sign-box">
+                                    <div style="font-size:11px;font-weight:700;color:#333;margin-bottom:30px;">
+                                        Employee's Signature</div>
+                                    <div class="sign-line">
+                                        <div class="name">&nbsp;</div>
+                                        <div class="title">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="payslip-footer">
+                                <div>Source: Merit Payroll System · <span id="footerPayDate">20-May-2026</span></div>
+                                <div class="qr-placeholder">
+                                    <div>
+                                        <i class="fas fa-qrcode"
+                                            style="font-size:16px;display:block;margin-bottom:2px;"></i>
+                                        QR Code
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal">
+            <h3>Reset Payslip?</h3>
+            <p>All current unsaved information will be cleared and restored to sample data. This action cannot be
+                undone.</p>
+            <div class="modal-actions">
+                <button class="btn" id="cancelResetBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmResetBtn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+
+</html>

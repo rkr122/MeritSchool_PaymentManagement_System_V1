@@ -1,0 +1,1953 @@
+/* ============================================================
+           PREMIUM 2026 PAYROLL — DESIGN SYSTEM
+           ============================================================ */
+:root {
+    /* Light theme (default) */
+    --bg-body: #F5F7FA;
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #FFFFFF;
+    --bg-input: #FFFFFF;
+    --text-primary: #111827;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --border-light: #E5E7EB;
+    --border-medium: #D1D5DB;
+    --accent: #2563EB;
+    --accent-hover: #1D4ED8;
+    --accent-soft: #EFF6FF;
+    --success: #16A34A;
+    --danger: #DC2626;
+    --warning: #D97706;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.03);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.02);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
+    --sidebar-width: 260px;
+    --sidebar-collapsed: 80px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+    --transition: 0.2s ease;
+}
+
+/* Dark mode overrides (dashboard only — payslip stays light) */
+body.dark {
+    --bg-body: #0F172A;
+    --bg-card: #1E293B;
+    --bg-sidebar: #0F172A;
+    --bg-input: #1E293B;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --border-light: #334155;
+    --border-medium: #475569;
+    --accent-soft: #1E3A8A;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
+/* ============================================================
+           RESET & BASE
+           ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg-body);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* ============================================================
+           UTILITY
+           ============================================================ */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gap-1 {
+    gap: 4px;
+}
+
+.gap-2 {
+    gap: 8px;
+}
+
+.gap-3 {
+    gap: 12px;
+}
+
+.gap-4 {
+    gap: 16px;
+}
+
+.mt-2 {
+    margin-top: 8px;
+}
+
+.mt-4 {
+    margin-top: 16px;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.text-muted {
+    color: var(--text-secondary);
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+/* ============================================================
+           LAYOUT: SIDEBAR + MAIN
+           ============================================================ */
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.25s ease, transform 0.25s ease;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed);
+}
+
+.sidebar-header {
+    padding: 20px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-light);
+    min-height: 70px;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+}
+
+.sidebar-logo .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.sidebar.collapsed .sidebar-logo span:not(.logo-mark) {
+    display: none;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    position: relative;
+}
+
+.nav-item i {
+    font-size: 1.15rem;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.nav-item:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.nav-item.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 0 3px 3px 0;
+}
+
+.sidebar.collapsed .nav-item span:not(.nav-label) {
+    display: none;
+}
+
+.sidebar.collapsed .nav-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed .nav-item i {
+    font-size: 1.3rem;
+}
+
+.sidebar-footer {
+    padding: 16px 12px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-footer .nav-item {
+    font-size: 0.85rem;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-body);
+    margin-top: 4px;
+}
+
+.admin-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.admin-info {
+    line-height: 1.2;
+    overflow: hidden;
+}
+
+.admin-info .name {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.admin-info .role {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.sidebar.collapsed .admin-info,
+.sidebar.collapsed .sidebar-footer .nav-item span {
+    display: none;
+}
+
+.sidebar.collapsed .admin-profile {
+    justify-content: center;
+    padding: 8px 0;
+}
+
+/* ---------- MAIN ---------- */
+.main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- TOPBAR ---------- */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 28px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-light);
+    gap: 20px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+body.dark .topbar {
+    background: rgba(15, 23, 42, 0.85);
+}
+
+.topbar-left h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+}
+
+.topbar-left p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-body);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 7px 14px;
+    min-width: 200px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.search-box:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.search-box i {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.search-box input::placeholder {
+    color: var(--text-muted);
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border 0.15s;
+    font-size: 1rem;
+    position: relative;
+}
+
+.icon-btn:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.icon-btn .badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background: var(--danger);
+    border-radius: 50%;
+    border: 2px solid var(--bg-card);
+}
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px 4px 4px;
+    border-radius: 40px;
+    background: var(--bg-body);
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+}
+
+.user-chip .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.user-chip .name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+/* ============================================================
+           CONTENT AREA
+           ============================================================ */
+.content {
+    padding: 24px 28px 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ---------- KPI CARDS ---------- */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.kpi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kpi-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.kpi-icon.blue {
+    background: #EFF6FF;
+    color: #2563EB;
+}
+
+.kpi-icon.green {
+    background: #ECFDF5;
+    color: #16A34A;
+}
+
+.kpi-icon.amber {
+    background: #FFFBEB;
+    color: #D97706;
+}
+
+.kpi-icon.red {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+body.dark .kpi-icon.blue {
+    background: #1E3A8A;
+    color: #60A5FA;
+}
+
+body.dark .kpi-icon.green {
+    background: #064E3B;
+    color: #34D399;
+}
+
+body.dark .kpi-icon.amber {
+    background: #78350F;
+    color: #FBBF24;
+}
+
+body.dark .kpi-icon.red {
+    background: #7F1D1D;
+    color: #F87171;
+}
+
+.kpi-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+}
+
+.kpi-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.kpi-sub .trend-up {
+    color: var(--success);
+}
+
+.kpi-sub .trend-down {
+    color: var(--danger);
+}
+
+/* ---------- WORKSPACE: EDITOR + PREVIEW ---------- */
+.workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* ---------- FORM CARDS ---------- */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 22px;
+    transition: box-shadow 0.2s;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-title i {
+    color: var(--accent);
+    font-size: 1.05rem;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ---------- FORM ELEMENTS ---------- */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.2px;
+}
+
+.form-group label .required {
+    color: var(--danger);
+    margin-left: 2px;
+}
+
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrap i {
+    position: absolute;
+    left: 12px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+    transition: color 0.2s;
+}
+
+.input-wrap input,
+.input-wrap select {
+    width: 100%;
+    padding: 9px 12px 9px 36px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.input-wrap input:focus,
+.input-wrap select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input-wrap input:focus+i,
+.input-wrap select:focus+i {
+    color: var(--accent);
+}
+
+.input-wrap input.error,
+.input-wrap select.error {
+    border-color: var(--danger);
+}
+
+.input-wrap input.error:focus,
+.input-wrap select.error:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.input-wrap .unit {
+    position: absolute;
+    right: 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.helper {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.error-msg {
+    font-size: 0.7rem;
+    color: var(--danger);
+    margin-top: 2px;
+    display: none;
+}
+
+.error-msg.show {
+    display: block;
+}
+
+/* Segmented control */
+.segmented {
+    display: flex;
+    background: var(--bg-body);
+    border-radius: var(--radius-sm);
+    padding: 3px;
+    gap: 2px;
+    border: 1px solid var(--border-light);
+}
+
+.segmented button {
+    flex: 1;
+    padding: 7px 10px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+}
+
+.segmented button.active {
+    background: var(--bg-card);
+    color: var(--accent);
+    box-shadow: var(--shadow-sm);
+}
+
+.segmented button:hover:not(.active) {
+    color: var(--text-primary);
+}
+
+/* Salary row with percentage toggle */
+.salary-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border-light);
+}
+
+.salary-row:last-child {
+    border-bottom: none;
+}
+
+.salary-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.salary-row-header .label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.salary-row-header .calculated {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.salary-inputs {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.salary-inputs input {
+    flex: 1;
+    padding: 7px 10px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.salary-inputs input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.salary-inputs .mode-toggle {
+    display: flex;
+    background: var(--bg-body);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+    border: 1px solid var(--border-light);
+    flex-shrink: 0;
+}
+
+.salary-inputs .mode-toggle button {
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.salary-inputs .mode-toggle button.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ---------- DEDUCTION ROW ---------- */
+.deduction-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+}
+
+.deduction-row label {
+    flex: 1;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.deduction-row input {
+    width: 110px;
+    padding: 6px 8px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    text-align: right;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.deduction-row input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ---------- ATTENDANCE STATS ---------- */
+.attendance-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.att-stat {
+    background: var(--bg-body);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.att-stat .val {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.att-stat .pct {
+    color: var(--success);
+    font-weight: 700;
+}
+
+/* ============================================================
+           PAYSLIP PREVIEW (A4 DOCUMENT)
+           ============================================================ */
+.payslip-preview-wrap {
+    position: sticky;
+    top: 100px;
+}
+
+.payslip-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    justify-content: flex-end;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-medium);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+    white-space: nowrap;
+    outline: none;
+}
+
+.btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.btn:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #fff;
+}
+
+.btn-success {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: #15803D;
+    border-color: #15803D;
+    color: #fff;
+}
+
+.btn-danger {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #B91C1C;
+    border-color: #B91C1C;
+    color: #fff;
+}
+
+.btn-ghost {
+    border-color: transparent;
+    background: transparent;
+}
+
+.btn-ghost:hover {
+    background: var(--bg-body);
+    border-color: var(--border-light);
+    color: var(--text-primary);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn .spinner {
+    display: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.btn.loading .spinner {
+    display: block;
+}
+
+.btn.loading .btn-text {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---------- A4 PAYSLIP DOCUMENT ---------- */
+.payslip-doc {
+    background: #f7f4f4;
+    border: 1px solid #ddd;
+    border-radius: var(--radius-sm);
+    padding: 44px 36px 32px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: #111;
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-lg);
+    /* A4 proportion hint */
+    min-height: 1060px;
+}
+
+/* Watermark */
+.payslip-doc .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.payslip-doc .watermark img {
+    width: 280px;
+    height: auto;
+    max-width: 50%;
+    opacity: 0.07;
+    filter: grayscale(1) brightness(0.5);
+    mix-blend-mode: multiply;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.payslip-doc>*:not(.watermark) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Payslip header */
+.payslip-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #333;
+}
+
+.payslip-header .logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.payslip-header .school-info {
+    text-align: center;
+}
+
+.payslip-header .school-info .name {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    color: #111;
+    line-height: 1.2;
+}
+
+.payslip-header .school-info .sub {
+    font-size: 11px;
+    color: #555;
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+.payslip-header .right-meta {
+    text-align: right;
+    font-size: 11px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.payslip-header .right-meta .payslip-label {
+    font-size: 16px;
+    font-weight: 800;
+    color: #111;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+/* Title bar */
+.payslip-title {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    padding: 6px 0;
+    margin: 18px 0 20px;
+    color: #222;
+}
+
+/* Info grid */
+.payslip-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 24px;
+    margin-bottom: 22px;
+}
+
+.payslip-info-grid .info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.payslip-info-grid .info-item {
+    display: flex;
+    font-size: 11.5px;
+    line-height: 1.6;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 3px;
+}
+
+.payslip-info-grid .info-item .lbl {
+    font-weight: 700;
+    min-width: 100px;
+    color: #444;
+    flex-shrink: 0;
+}
+
+.payslip-info-grid .info-item .val {
+    color: #111;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+/* Earnings table */
+.payslip-section-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #222;
+    margin: 18px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid #999;
+}
+
+.earnings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.earnings-table th {
+    background: #eaeaea;
+    border: 1px solid #999;
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #333;
+}
+
+.earnings-table td {
+    border: 1px solid #bbb;
+    padding: 6px 10px;
+    color: #111;
+}
+
+.earnings-table td.amount {
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.earnings-table tr.subtotal td {
+    background: #f3f3f3;
+    font-weight: 700;
+}
+
+.earnings-table tr.net-row td {
+    background: #e8f0fe;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.earnings-table tr.total-deduction td {
+    background: #fef2f2;
+    font-weight: 700;
+}
+
+/* Net block */
+.payslip-net-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 18px;
+    padding: 12px 16px;
+    border-top: 2px solid #333;
+    border-bottom: 2px solid #333;
+    background: #f0f4ff;
+}
+
+.payslip-net-block .net-label {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #111;
+}
+
+.payslip-net-block .net-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111;
+    letter-spacing: -0.5px;
+}
+
+.payslip-net-block .net-words {
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+    font-style: italic;
+    width: 100%;
+    text-align: right;
+}
+
+/* Signature area */
+.payslip-signatures {
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0 16px;
+    gap: 30px;
+}
+
+.payslip-signatures .sign-box {
+    text-align: center;
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.payslip-signatures .sign-box .sign-line {
+    border-top: 1px solid #333;
+    margin-top: 46px;
+    padding-top: 6px;
+    font-size: 11px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.payslip-signatures .sign-box .sign-line .name {
+    font-weight: 700;
+    color: #111;
+}
+
+.payslip-signatures .sign-box .sign-line .title {
+    font-size: 10px;
+    color: #555;
+}
+
+/* Payslip footer */
+.payslip-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid #bbb;
+    font-size: 10px;
+    color: #666;
+}
+
+.payslip-footer .qr-placeholder {
+    width: 60px;
+    height: 60px;
+    background: #f0f0f0;
+    border: 1px dashed #999;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: #888;
+    text-align: center;
+    line-height: 1.2;
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+           TOAST & MODAL
+           ============================================================ */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.toast {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    min-width: 260px;
+    pointer-events: auto;
+    animation: slideIn 0.25s ease;
+    border-left: 4px solid var(--accent);
+}
+
+.toast.success {
+    border-left-color: var(--success);
+}
+
+.toast.error {
+    border-left-color: var(--danger);
+}
+
+.toast.warning {
+    border-left-color: var(--warning);
+}
+
+.toast i {
+    font-size: 1.1rem;
+}
+
+.toast.success i {
+    color: var(--success);
+}
+
+.toast.error i {
+    color: var(--danger);
+}
+
+.toast.warning i {
+    color: var(--warning);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 420px;
+    width: 100%;
+    padding: 24px;
+    border: 1px solid var(--border-light);
+    animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.modal p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* ============================================================
+           RESPONSIVE BREAKPOINTS
+           ============================================================ */
+@media (max-width: 1440px) {
+    .workspace {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .payslip-preview-wrap {
+        position: static;
+    }
+
+    .payslip-doc {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: var(--sidebar-collapsed);
+    }
+
+    .sidebar .sidebar-logo span:not(.logo-mark),
+    .sidebar .nav-item span,
+    .sidebar .admin-info {
+        display: none;
+    }
+
+    .sidebar .nav-item {
+        justify-content: center;
+        padding: 10px 0;
+    }
+
+    .sidebar .nav-item i {
+        font-size: 1.3rem;
+    }
+
+    .sidebar .admin-profile {
+        justify-content: center;
+        padding: 8px 0;
+    }
+
+    .topbar {
+        padding: 12px 20px;
+    }
+
+    .content {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 260px;
+        transform: translateX(-100%);
+        box-shadow: var(--shadow-lg);
+        z-index: 200;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .sidebar.collapsed {
+        width: 260px;
+    }
+
+    .sidebar.collapsed .sidebar-logo span:not(.logo-mark),
+    .sidebar.collapsed .nav-item span,
+    .sidebar.collapsed .admin-info {
+        display: block;
+    }
+
+    .sidebar.collapsed .nav-item {
+        justify-content: flex-start;
+        padding: 10px 12px;
+    }
+
+    .sidebar.collapsed .admin-profile {
+        justify-content: flex-start;
+        padding: 8px 10px;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .topbar-left h1 {
+        font-size: 1.1rem;
+    }
+
+    .topbar-right .search-box {
+        min-width: 140px;
+    }
+
+    .user-chip .name {
+        display: none;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .kpi-value {
+        font-size: 1.2rem;
+    }
+
+    .payslip-doc {
+        padding: 24px 16px;
+        font-size: 12px;
+        min-height: auto;
+    }
+
+    .payslip-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .payslip-header .logo {
+        margin: 0 auto;
+        width: 60px;
+        height: 60px;
+    }
+
+    .payslip-header .right-meta {
+        text-align: center;
+    }
+
+    .payslip-info-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .payslip-info-grid .info-item .lbl {
+        min-width: 80px;
+    }
+
+    .payslip-signatures {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .payslip-signatures .sign-box {
+        width: 100%;
+        max-width: 240px;
+    }
+
+    .payslip-net-block {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .payslip-net-block .net-words {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .topbar-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .content {
+        padding: 12px;
+        gap: 16px;
+    }
+
+    .card {
+        padding: 14px 12px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .salary-inputs {
+        flex-wrap: wrap;
+    }
+
+    .payslip-doc {
+        padding: 18px 10px;
+    }
+
+    .earnings-table th,
+    .earnings-table td {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+
+    .payslip-net-block .net-value {
+        font-size: 18px;
+    }
+
+    .toast-container {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .toast {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 400px) {
+    .payslip-doc {
+        padding: 12px 6px;
+    }
+
+    .payslip-header .school-info .name {
+        font-size: 14px;
+    }
+
+    .earnings-table td.amount {
+        font-size: 10px;
+    }
+
+    .payslip-net-block .net-value {
+        font-size: 15px;
+    }
+
+    .payslip-signatures .sign-box {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+           PRINT STYLES — A4 PAYSLIP ONLY
+           ============================================================ */
+@media print {
+    @page {
+        size: A4;
+        margin: 0.2in;
+    }
+
+    body {
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 12pt;
+    }
+
+    .sidebar,
+    .topbar,
+    .kpi-grid,
+    .payslip-actions,
+    .toast-container,
+    .modal-overlay,
+    .search-box,
+    .icon-btn,
+    .user-chip,
+    .card:not(.payslip-preview-wrap) {
+        display: none !important;
+    }
+
+    .app {
+        display: block !important;
+    }
+
+    .main {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    .content {
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+        display: block !important;
+    }
+
+    .workspace {
+        display: block !important;
+        gap: 0 !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    .payslip-preview-wrap {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: #fff !important;
+    }
+
+    .payslip-doc {
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0.15in 0.1in !important;
+        min-height: auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        background: #f7f4f4 !important;
+        font-size: 11px !important;
+        page-break-inside: avoid !important;
+        page-break-after: avoid !important;
+        margin: 0 !important;
+    }
+
+    .payslip-doc .watermark img {
+        width: 220px !important;
+        opacity: 0.07 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .payslip-doc>*:not(.watermark) {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    .payslip-header {
+        grid-template-columns: auto 1fr auto !important;
+        gap: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .payslip-header .logo {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .payslip-header .school-info .name {
+        font-size: 16px !important;
+    }
+
+    .payslip-info-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px 16px !important;
+    }
+
+    .payslip-info-grid .info-item {
+        font-size: 10px !important;
+    }
+
+    .earnings-table th,
+    .earnings-table td {
+        padding: 4px 8px !important;
+        font-size: 10px !important;
+    }
+
+    .payslip-net-block .net-value {
+        font-size: 20px !important;
+    }
+
+    .payslip-signatures .sign-box .sign-line {
+        margin-top: 40px !important;
+    }
+
+    .payslip-footer .qr-placeholder {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 7px !important;
+    }
+
+    /* Force background colors */
+    .earnings-table th {
+        background: #eaeaea !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .earnings-table tr.subtotal td {
+        background: #f3f3f3 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .earnings-table tr.net-row td {
+        background: #e8f0fe !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .payslip-net-block {
+        background: #f0f4ff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .payslip-doc {
+        background: #f7f4f4 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
